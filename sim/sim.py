@@ -44,12 +44,13 @@ if __name__ == "__main__":
             rho.append(10)
 
     nxyz = init_nxyz()
-    sequence = np.loadtxt('../seq/sequence_direct.txt', dtype=int)
+    sequence = np.loadtxt('../seq/sequence.txt', dtype=int)
     scheme = make_scheme(nxyz, sequence)
 
     sim = pb.ERTManager()
     sim_result = sim.simulate(mesh=mesh, res=rho, scheme=scheme, noiseLevel=0.02)
-
+    sim_result.save('sim_result.data')
+    exit()
     sim_output = pd.DataFrame(index=np.arange(scheme.size()), columns=['k', 'rhoa', 'r'])
     sim_output['rhoa'] = np.array(sim_result['rhoa'])
     sim_output['k'] = np.array(sim_result['k'])

@@ -16,8 +16,7 @@ def show_mesh(mesh, elec):
 def make_mesh():
     elec = np.linspace(0, 31.5, 64)
     world = mt.createWorld(start=[-20, -30], end=[51.5, 0], worldMarker=True, area=2)
-    medium = mt.createRectangle(start=[-1, -6], end=[32.5, 0], marker=2, area=0.4)
-    inner = mt.createRectangle(start=[-1, -3], end=[32.5, 0], marker=3, area=0.5)
+    medium = mt.createRectangle(start=[-2, -7], end=[33.5, 0], marker=2, area=0.2)
     for e in elec:
         medium.createNode(pg.RVector3(e, 0, 0), marker=pg.MARKER_NODE_ELECTRODE)
         medium.createNode(pg.RVector3(e,-0.2,0))
