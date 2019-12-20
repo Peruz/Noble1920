@@ -8,17 +8,18 @@ __year__ = "2019"
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import time
+import seaborn
 
-def add_skip(skip, npot_max, electrodes, rec):
+def add_dd(skip, pot_ms, electrodes, rec):
+    a_lastn = skip + max(pot_ms) + skip + 1  # a s s b m1 m2 m3 s s n3 
     seq = []
     for a in electrodes:
-        b = a + 1 + skip
-        for m in range(b + 1, electrodes[-1]):
-            n = m + 1 + skip
-            npot += 1
-            if npot == npot_max:
-                break
+        b = a + skip + 1
+        for pot_m in pot_ms:
+            m = b + pot_m
+            n = m + skip + 1
+            if n > electrodes[-1]:
+                continue
             seq.append([a, b, m, n])
             if rec:
                 seq.append([m, n, a, b])
@@ -37,12 +38,12 @@ def add_Wenner(skip, electrodes, rec):
     seq = pd.DataFrame(np.array(seq), columns=['a', 'b', 'm', 'n'])
     return(seq)
 
-def add_grad(skip, electrodes, rec):
+def add_grad(skip_ab, skip_mn, skip_mm, electrodes, rec):
     seq = []
-    for a in range(1, electrodes[-1] - 3*skip - 2):
-        b = a + ((skip + 1) * 3)
-        for m in range(a + 1, b - 2*skip):
-            n = m + skip +1
+    for a in range(1, electrodes[-1] - skip_ab - 1):
+        b = a + skip_ab + 1
+        for m in range(a + 1, b - skip_mn - 1, skip_mm):
+            n = m + skip_mn + 1
             seq.append([a, b, m, n])
             if rec:
                 seq.append([m, n, a, b])
@@ -76,6 +77,20 @@ def fun_rec(a: np.ndarray, b: np.ndarray, m: np.ndarray, n: np.ndarray):
                 break
     return(rec_num, rec_fnd)
 
+def add_dds(seq_list):
+    dd = {2: [1, 2, 3, 4, 5, 6, 7, 8], 4: [6, 8, 10, 12, 14, 16, 18, 20], 6: [16, 20, 24, 28, 32, 36, 40, 44]}
+    for k, v in dd.items():
+        seq = add_dd(k, v, electrodes, rec=True)
+        seq_list.append(seq)
+    return(seq_list)
+
+def add_grads(seq_list):
+    grads = {11:[2, 1], 21: [4, 1], 53: [6, 3]}
+    for k, v in grads.items():
+        seq = add_grad(k, v[0], v[1], electrodes, rec=True)
+        seq_list.append(seq)
+    return(seq_list)
+
 if __name__ == "__main__":
 
     num_elec = 64
@@ -85,15 +100,8 @@ if __name__ == "__main__":
     electrodes = np.linspace(1, num_elec , num_elec, endpoint=True, dtype = np.int8)
     seq_list = []
 
-    grads = [1, 2, 3, 4, 5, 6, 8, 11, 14, 17, 20]
-
-    seq = []
-
-    for g in grads:
-
-        seq = add_grad(g, electrodes, rec=True)
-        print('grad', g, 'len', len(seq))
-        seq_list.append(seq)
+    #seq_list = add_dds(seq_list)
+    seq_list = add_grads(seq_list)
 
     seq = pd.concat(seq_list, ignore_index=True)
 
@@ -103,12 +111,15 @@ if __name__ == "__main__":
     groups = seq.groupby(['a', 'b'])
     inj = 0
     for n, g in groups:
-        inj += len(g) // 8  + 1
+        print(g)
+        print(len(g))
+        inj += ((len(g) - 1) // 8) + 1
     print('inj', inj)
     print('number of groups: ', groups.ngroups)
     print('mean group length: ', groups.size().reset_index(name='counts')['counts'].mean())
     print('mode group length: ',groups.size().reset_index(name='counts')['counts'].mode())
-
+    seaborn.distplot(groups.size().reset_index(name='counts')['counts'], bins=range(1, 20))
+    plt.show()
     # write labrecque schedule
     seq_clean = seq.to_numpy()
     np.savetxt('sequence.txt', seq_clean, fmt = '%i %i %i %i')
@@ -121,6 +132,6 @@ if __name__ == "__main__":
     # get only direct for modeling
     rec_num, rec_fnd = fun_rec(seq_clean[:, 0], seq_clean[:, 1], seq_clean[:, 2], seq_clean[:, 3])
     seq_dir = seq_clean[rec_fnd == 1, :]
-    print(len(seq_clean))
-    print(len(seq_dir))
+    print('len sequence', len(seq_clean))
+    print('len direct sequence', len(seq_dir))
     np.savetxt('sequence_direct.txt', seq_dir, fmt = '%i %i %i %i')

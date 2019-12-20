@@ -11,6 +11,8 @@ plot_misfit = True
 if invert:
     files = [f for f in os.listdir() if f.endswith('.dat')]
     for f in files:
+        if f.replace('.dat', '_inv.csv') in os.listdir():
+            continue  # already inverted
         print('INFO inverting:   ', f)
         # load data and mesh
         data = pb.load(f)
@@ -25,10 +27,10 @@ if invert:
         ert.paraDomain.save('mesh_para')
         mesh_para = pg.load('mesh_para.bms')
         mesh_para.addExportData('res', res)
-        mesh_para.exportVTK(f + 'mesh_para.vtk')
+        mesh_para.exportVTK(f.replace('.dat', '_mesh_para.vtk'))
         # plot
         ax, cbar = ert.showModel(cMap='jet')
-        plt.savefig(f + 'inv.png', dpi=600)
+        plt.savefig(f.replace('.dat', '_inv.png'), dpi=600)
         plt.show()
         # misfit
         fwd_response = np.array(ert.inv.response())

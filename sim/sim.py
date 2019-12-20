@@ -39,18 +39,17 @@ if __name__ == "__main__":
     rho = []
     for cell in mesh.cells():
         if (cell.center().x() > 15 and cell.center().x() < 20 and cell.center().y() > -1.5 and cell.center().y() < 0):
-            rho.append(100)
+            rho.append(50)
         else:
             rho.append(10)
 
     nxyz = init_nxyz()
-    sequence = np.loadtxt('../seq/sequence.txt', dtype=int)
+    sequence = np.loadtxt('../seq/sequence_direct.txt', dtype=int)
     scheme = make_scheme(nxyz, sequence)
 
     sim = pb.ERTManager()
-    sim_result = sim.simulate(mesh=mesh, res=rho, scheme=scheme, noiseLevel=0.02)
+    sim_result = sim.simulate(mesh=mesh, res=rho, scheme=scheme, noiseLevel=0.0)
     sim_result.save('sim_result.data')
-    exit()
     sim_output = pd.DataFrame(index=np.arange(scheme.size()), columns=['k', 'rhoa', 'r'])
     sim_output['rhoa'] = np.array(sim_result['rhoa'])
     sim_output['k'] = np.array(sim_result['k'])
@@ -66,9 +65,9 @@ if __name__ == "__main__":
     inv.setMesh(mesh)
 
     inv.setData(sim_result)
-    inv_res = inv.invert(err=0.05, lam=20)
+    inv_res = inv.invert(err=0.02, lam=20)
     inv.paraDomain.save("mesh.vtk")
-    ax, cbar = inv.showModel(cmap='jet')
+    ax, cbar = inv.showModel(cmap='jet', cMin=0, cMax=50)
     plt.show()
     #mesh.addExportData('inv_rho', inv_res)
     #mesh.exportVTK('mesh_data.vtk')
