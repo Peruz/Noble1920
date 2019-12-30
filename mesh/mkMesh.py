@@ -6,8 +6,10 @@ import pyvista as pv
 
 
 def show_mesh(mesh, elec):
-    pg.show(mesh, showBoundary=True, markers=True, hold=True, showMesh=True)
-    plt.plot(elec, np.zeros_like(elec), 'or')
+    fig = plt.figure()
+    ax = plt.gca()
+    pg.show(mesh, showBoundary=True, markers=True, hold=True, showMesh=True, ax=ax)
+    ax.plot(elec, np.zeros_like(elec), 'or')
     plt.xlim([-2, 33.5])
     plt.ylim([-8, 0])
     plt.title('mesh')
@@ -16,10 +18,10 @@ def show_mesh(mesh, elec):
 def make_mesh():
     elec = np.linspace(0, 31.5, 64)
     world = mt.createWorld(start=[-20, -30], end=[51.5, 0], worldMarker=True, area=2)
-    medium = mt.createRectangle(start=[-2, -7], end=[33.6, 0], marker=2, area=0.05)
+    medium = mt.createRectangle(start=[-2, -7], end=[33.6, 0], marker=2, area=0.3)
     for e in elec:
         medium.createNode(pg.RVector3(e, 0, 0), marker=pg.MARKER_NODE_ELECTRODE)
-        medium.createNode(pg.RVector3(e,-0.05, 0))
+        medium.createNode(pg.RVector3(e,-0.10, 0))
     geom = mt.mergePLC([world, medium])
     mesh = mt.createMesh(geom, quality=33, smooth=[1,20])
     return(mesh, elec)

@@ -10,6 +10,7 @@ plot_misfit = True
 
 if invert:
     files = [f for f in os.listdir() if f.endswith('.dat')]
+    files = ['GRAD_C_NOWEN20191230_1031.dat']
     for f in files:
         if f.replace('.dat', '_inv.csv') in os.listdir():
             continue  # already inverted
@@ -22,7 +23,7 @@ if invert:
         ert.setData(data)
         ert.setMesh(mesh)
         # run inversion
-        res = ert.invert(err=0.05, lam=20, robustData=False)
+        res = ert.invert(err=0.02, lam=50, robustData=False)
         # vtk
         ert.paraDomain.save('mesh_para')
         mesh_para = pg.load('mesh_para.bms')

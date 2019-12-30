@@ -44,7 +44,7 @@ if __name__ == "__main__":
             rho.append(10)
 
     nxyz = init_nxyz()
-    sequence = np.loadtxt('../seq/sequence_direct.txt', dtype=int)
+    sequence = np.loadtxt('../seq/sequence.txt', dtype=int)
     scheme = make_scheme(nxyz, sequence)
 
     sim = pb.ERTManager()
