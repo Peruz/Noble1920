@@ -48,7 +48,7 @@ def plot_vtk(f):
     ax.set_xlabel('m')
     ax.set_ylabel('m')
     plt.tight_layout()
-    name_fig = f.replace('.vtk', '.png')
+    name_fig = f.replace('_inv.vtk', '_inv.png')
     plt.savefig(name_fig, dpi=600)
     plt.show()
 
@@ -64,15 +64,15 @@ def plot_misfit(f):
     ax2.set_ylabel('fwd calculated')
     ax2.axis('equal')
     fig.tight_layout()
-    name_fig = f.replace('.csv', '.png')
+    name_fig = f.replace('_misfit.csv', '_misfit.png')
     plt.savefig(name_fig, dpi=600)
     plt.show()
 
 if __name__ == '__main__':
 
     do_invert = True
-    do_plot_misfit = False
-    do_plot_vtk = False
+    do_plot_misfit = True
+    do_plot_vtk = True
 
     if do_invert:
         mesh = pg.load('../mesh/mesh.bms')
