@@ -11,8 +11,36 @@ def invert_file(data, mesh):
     ert = pb.ERTManager()
     ert.setData(data)
     ert.setMesh(mesh)
-    res = ert.invert(err=0.5, lam=50, robustData=False)
+    res = ert.invert(err=0.05, lam=50, robustData=False)
     return(ert)
+
+def invert_opt(data, mesh, lam):
+    """ invert file and saves to para_mesh
+    """
+    ert = pb.ERTManager()
+    ert.setData(data)
+    ert.setMesh(mesh)
+    res = ert.invert(err=0.05, robustData=False, lam=lam)
+    chi2 = ert.inv.chi2()
+    model = ert.inv.model()
+    lam_record = []
+    chi2_record = []
+    model_record = []
+    lam_record.append(lam)
+    chi2_record.append(chi2)
+    model_record.append(model)
+    while not 0.8 < chi2 < 1.2:
+        if chi2 < 0.8:
+            lam *= 2
+        if chi2 > 1.2:
+            lam /= 3
+        res = ert.invert(err=0.05, robustData=False, lam=lam, startModel=model)
+        chi2 = ert.inv.chi2()
+        model = ert.inv.model()
+        model_record.append(model)
+        lam_record.append(lam)
+        chi2_record.append(chi2)
+    return(ert, lam_record, chi2_record, model_record)
 
 def save_vtk(f, ert):
     """ after the inversion ert instance contains: paradomain, resistivity, and coverage.
@@ -68,20 +96,31 @@ def plot_misfit(f):
     plt.savefig(name_fig, dpi=600)
     plt.show()
 
+
 if __name__ == '__main__':
 
-    do_invert = True
-    do_plot_misfit = True
+    do_invert = False
+    do_invert_all = False
+    do_plot_misfit = False
     do_plot_vtk = True
 
     if do_invert:
         mesh = pg.load('../mesh/mesh.bms')
         all_dat = [f for f in os.listdir() if f.endswith('.dat')]
-        inverted_dat = [f for f in all_dat if f.replace('.dat', '_inv.vtk') in os.listdir()]
-        toinvert_dat = all_dat - inverted_dat
+        if not do_invert_all:
+            inverted_dat = [f for f in all_dat if f.replace('.dat', '_inv.vtk') in os.listdir()]
+            toinvert_dat = [f for f in all_dat if f not in inverted_dat]
+        else:
+            toinvert_dat = all_dat
         for f in toinvert_dat:
+            print('---\n' * 2, f)
             data = pb.load(f)
-            ert = invert_file(data, mesh)
+            lam = 700
+            #ert = invert_file(data, mesh)
+            ert, lam_record, chi2_record, model_record = invert_opt(data, mesh, lam)
+            print(lam_record)
+            print(chi2_record)
+            lam = lam_record[-1]
             save_misfit(f, ert)
             save_vtk(f, ert)
 
@@ -91,6 +130,6 @@ if __name__ == '__main__':
             plot_misfit(f)
 
     if do_plot_vtk:
-        vtk_files = [f for f in os.listdir() if f.endswith('mesh_para.vtk')]
+        vtk_files = [f for f in os.listdir() if f.endswith('_inv.vtk')]
         for f in vtk_files:
             plot_vtk(f)
