@@ -12,5 +12,8 @@ The 2 TEROS 21 were installed at a detpth of 20 and 40 cm.
 1) Download and install "ZENTRA Utility installer" from the METER Environment website.
     a) It should be possible to open this link https://www.metergroup.com/environment/articles/buy-browse-meter-legacy-data-loggers/
     b) This is the page for the data logger. Under EM60 open "Manual and Software" and and click "ZENTRA Utility installer" (PC or MAC).
-2) I'm afraid none of us as a windows machine to try it step by step, but if you remember something please exntend this as much as you can ...
+2) Open Zentra Utility on desktop (Big White Z).
+3) (Field): connect the data logger to the laptop with a USB cable, select the right comport and click 'Connect'.
+4) Click 'Download' and have the options to download the preferable range of days.
+5) (Teamviewer!) I'm afraid none of us as a windows machine to try it step by step, but if you remember something please exntend this as much as you can ...
 
