@@ -1,0 +1,98 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc} % input encdoding = written input text to latex
+\usepackage[T1]{fontenc} % encoding = compiled latex to output font
+\usepackage{natbib}% support (author-year, numbered, etc.), also improved compatibility with bib managing
+\usepackage{microtype} % microtypography is the art of enhancing the appearance of a document while exhibiting the minimum degree of visual obtrubsion
+\usepackage{newpxtext,newpxmath} % vectorial palatino-like font with support for math, siunitx, mchem, etc. It is also darker than standard latex font
+\usepackage[left=2cm,right=2cm,top=3cm,bottom=3cm,headheight=15pt]{geometry} % adjust layout - borders
+\usepackage{emptypage} % avoid headers and footers on white pages.
+\usepackage[parfill]{parskip} % pararaph layout (white vertical space, last paragraph line with minimum space, etc.)
+\usepackage{makecell}
+\usepackage{multirow} % macros for tabular env. etc. (multirow cells, ...)
+\usepackage{tabularx,ragged2e} % extention of tabular with column X, which automatically adjusts width etc
+\usepackage{float} % improved management (H, ...) for floating objects
+\usepackage{bm} % bold in math mode (e.g., vector fields)
+\usepackage{graphicx} % extention of the graphics package, including key-value interface for the includegraphics command 
+\usepackage{caption}
+\usepackage{subcaption} % for formatting captions and subcaptions
+\usepackage{booktabs} % for professional looking tables
+\usepackage[version=4]{mhchem} % chemical formulas
+\usepackage{amsfonts}
+\usepackage{pdflscape}
+\usepackage{amssymb} % extended set of fonts and symbols for mathematics
+\usepackage{amsmath} % improve structure and output of documents that contain mathematics
+\usepackage{mathtools} % based on amsmath, it improves looking and provide new capabilities and options (numbering, format, etc.)
+\usepackage{pdfpages}
+\usepackage{textcomp} % extended set of fonts and symbols
+\usepackage[toc,page]{appendix} % allows appendices
+\usepackage{epigraph}
+\setlength\epigraphwidth{0.7\textwidth}
+\setlength\epigraphrule{0pt} % allow epighaphs and provide various handles to tweak the appearance
+\usepackage{listings} % include code
+\usepackage{siunitx} % standard input of units and numbers (SI, si, num, etc.)
+\sisetup{separate-uncertainty, multi-part-units=single, detect-family, detect-weight, range-units=single}
+\usepackage[compact]{titlesec} % managing titles, headers, etc. Compact reduces spaces above and below the titles
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\hypersetup{colorlinks, linkcolor=[rgb]{0.1,0.2,0.7}, citecolor=[RGB]{120,0,0}, urlcolor=[rgb]{0.1,0.2,0.7}}
+\title{}
+\author{Luca Peruzzo}
+\date{}
+\begin{document}
+\setcounter{secnumdepth}{0}
+\newcommand{\myseparator}{\noindent\makebox[\linewidth]{\resizebox{0.5\linewidth}{1pt}{$\bullet$}}\bigskip}
+\newcommand{\subwidth}{0.48}
+\graphicspath{{./../}{./../figures/}{./figures/}}
+%\maketitle
+%\begin{figure}[H]
+%\centering
+%\begin{subfigure}{\textwidth}
+%\includegraphics[width=\textwidth]{}
+%\end{subfigure}
+%\end{figure}
+
+\section{Sensors at Noble}
+
+Sensors and data logger are from  METER ENVIRONMENT group, check their website for quick doubts.
+
+The data logger is a EM60G.
+There are 6 sensors installed: 4 5TE (moisture, temperature, and EC) and 2 TEROS 21 (water potential and temperature).
+The two types of sensors were installed in two close wells (1-2 feet apart) that are about the center of the ERT line (~ m 15 along the line, ~ 1 m away from the line).
+The 4 5TE sensors were installed at a depth of 20, 40, 60, and 80 cm.
+The 2 TEROS 21 were installed at a depth of 20 and 40 cm.
+
+\subsection{Download the data}
+
+I think we have two options.
+
+The easiest is trying to reach the ERT laptop from the data logger, without moving the laptop so that we don't have to play with the ERT cables.
+We installed the needed software on the laptop, and simply connecting the two would make it (we can access with teamviewer).
+I'm not sure what is the actual distance between laptop and data logger but I would say within 2 m, based on the installation details above.
+Thus, I think it may be worth trying either with the cable we sent you or we a new one (maybe adding an USB extension).
+
+Although secondary, the lid of the data logger cannot be closed while the micro-USB cable is connected.
+Even if we use this solution, we wont be able to have continuous access with teamviewer (as for the ERT).
+
+If reaching the laptop is harder than expected, here are the steps to install the software.
+Once in the field, we could again help with teamviewer if installed and needed.
+
+\subsubsection{Install the software}
+\begin{enumerate}
+\item Download and install "ZENTRA Utility installer" from the METER Environment website.
+\begin{itemize}
+\item It should be possible to open this link \url{https://www.metergroup.com/environment/articles/buy-browse-meter-legacy-data-loggers/}
+\item This is the page for the data logger. Under EM60 open "Manual and Software" and and click "ZENTRA Utility installer" (PC or MAC).
+\end{itemize}
+\item Open Zentra Utility on desktop (Big White Z) and check it seems ok.
+\end{enumerate}
+
+\subsubsection{In the field}
+\begin{itemize}
+\item Open Zentra.
+\item Connect the data logger to the laptop with a USB - microUSB cable (we shipped one with the sensors if needed),
+\item Select the right comport and click 'Connect'.
+\item Click 'Download' and have the options to download the preferable range of days (start from ~ March 15).
+\end{itemize}
+
+\end{document}
