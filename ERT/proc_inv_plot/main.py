@@ -34,7 +34,7 @@ if do_process:
 
 if do_invert:
     print('\nINVERSION')
-    table_to_invert = select_table(table, which='new', col_check='invert', col_needed='finv')
+    table_to_invert = select_table(table, which='all', col_check='invert', col_needed='finv')
     if table_to_invert.empty:
         print('no new files')
     else:
@@ -43,9 +43,10 @@ if do_invert:
             finv = r['finv']
             fref = None
             fyield = invert(fName=finv, mesh='mesh/mesh.bms',
-                            lam=1000, err=0.05, opt=True)
+                            lam=1000, err=0.05, opt=False, ref=fref)
             fvtk = next(fyield)
             table.loc[table['file'] == f, ['invert', 'fvtk']] = True, fvtk
+            fref = f
         table = update_table(table, table_name, data_ext)
 
 if do_plot2d:
