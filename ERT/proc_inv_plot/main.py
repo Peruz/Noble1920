@@ -2,10 +2,12 @@ from ERTpm.manager import *
 from ERTpm.process import process
 from ERTpm.invert import invert
 from ERTpm.plot2d import plot2d
+from ERTpm.analysis import analysis
 
 do_process = True
 do_invert = True
 do_plot2d = True
+do_analysis = True
 data_ext = '.Data'  # labrecque
 table = init_table(table_name, table_headers, table_dtypes)
 table = update_table(table, table_name, data_ext)
@@ -62,3 +64,9 @@ if do_plot2d:
             fpng = next(gen_fpng)
             table.loc[table['file'] == f, ['plot', 'fpng']] = True, fpng
         table = update_table(table, table_name, data_ext)
+
+if do_analysis:
+    analysis(csv_datasets=table_name,
+             csv_vols='sensor_volumes.csv',
+             datetime_col='datetime',
+             vtk_col='fvtk')
