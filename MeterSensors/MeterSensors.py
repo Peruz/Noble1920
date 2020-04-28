@@ -56,6 +56,7 @@ if __name__ == '__main__':
 
     data = read_csv('data20200417.csv')
     data = data.loc['2020-03-15 00:00:00': '2020-04-15 00:00:00']
+    data.to_csv('data_sensors.csv')
     plot_data = data.loc[:, (slice(None), 'temp_C')]
     plot_datetime(plot_data, ylabel='temp C', output='temp.png')
     plot_data = data.loc[:, (slice(None), 'w_pot_kPa')]

@@ -67,6 +67,6 @@ if do_plot2d:
 
 if do_analysis:
     analysis(csv_datasets=table_name,
-             csv_vols='sensor_volumes.csv',
+             csv_reg='sensor_volumes.csv',
              datetime_col='datetime',
              vtk_col='fvtk')
