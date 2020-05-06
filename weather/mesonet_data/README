@@ -1,0 +1,31 @@
+PARAMETER DESCRIPTION
+---------------------
+
+ TAIR Air Temperature (1.5 m); deg C
+ RELH Relative Humid. (1.5 m); %
+ SRAD Solar Radiation; W/m^2
+ PRES Station Pressure; mbar
+ RAIN Precip since 00 GMT; mm (See Notes)
+ WSPD Average Wind Spd (10 m); m/s 
+ WVEC Vector Average Wind Speed; m/s
+ WMAX Maximum Wind Speed (Gust); m/s
+ WDIR Wind Direction (10 m); deg
+ WSSD Standard Dev. of Wind Spd; m/s
+ WDSD Standard Dev. of Wind Dir; deg
+ TA9M Air Temperature at 9 m; deg C
+ WS2M Wind Speed at 2 m; m/s
+ TS05 Sod Soil Temp  ( 5 cm); deg C 
+ TB05 Bare Soil Temp ( 5 cm); deg C
+ TS10 Sod Soil Temp  (10 cm); deg C
+ TB10 Bare Soil Temp (10 cm); deg C
+ TS30 Sod Soil Temp  (30 cm); deg C
+
+ Notes:
+ (1) The 00:00 GMT observation stores the previous day's accumulated rainfall.
+ (2) Frozen precipitation is measured at the time of thaw.  Some snowmelt may never be observed due to factors including sublimation and blowing snow.
+ (3) Data quality is frequently re-assessed.  On rare occasions, some quality assurance flags may change in the months following your data request.
+
+Copyright (c) 1996-2003 Oklahoma Climatological Survey. All Rights Reserved. 
+
+
+         http://www.ocs.ou.edu
