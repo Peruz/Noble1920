@@ -6,7 +6,7 @@ import numpy as np
 
 
 def read_csv(fn):
-    data = pd.read_csv('data20200417.csv', skiprows=0, header=[0,2], skipinitialspace=True)
+    data = pd.read_csv('data20200602.csv', skiprows=0, header=[0, 2], skipinitialspace=True)
     # set datetime column as index
     dt_ind = data.columns.get_level_values(1).get_loc('Timestamp')
     dt_header = data.columns[dt_ind]
@@ -19,10 +19,10 @@ def read_csv(fn):
     # rename columns
     ports = {'Port 1': 'teros_1',
              'Port 2': 'teros_2',
-             'Port 3': '5t3_1',
-             'Port 4': '5t3_2',
+             'Port 3': '5te_1',
+             'Port 4': '5te_2',
              'Port 5': '5te_3',
-             'Port 6': '5t3_4',
+             'Port 6': '5te_4',
              'Port 7': 'logger_battery',
              'Port 8': 'logger_weather',
              '°C Soil Temperature': 'temp_C',
@@ -35,9 +35,10 @@ def read_csv(fn):
              '°C Logger Temperature': 'temp_C'}
     data = data.rename(columns=ports)
     data = data.replace({-999: np.nan})
-    data.loc[data[('5t3_4', 'temp_C')] == 0, ('5t3_4', 'temp_C')] = np.nan
-    data.loc[data[('5t3_4', 'w_cnt_vol')] == 0, ('5t3_4', 'w_cnt_vol')] = np.nan
+    data.loc[data[('5te_4', 'temp_C')] == 0, ('5te_4', 'temp_C')] = np.nan
+    data.loc[data[('5te_4', 'w_cnt_vol')] == 0, ('5te_4', 'w_cnt_vol')] = np.nan
     return(data)
+
 
 def plot_datetime(df, ylabel, output):
     fig, ax = plt.subplots(1, 1, sharex=True, figsize=(10, 6.5))
@@ -56,10 +57,11 @@ def plot_datetime(df, ylabel, output):
     plt.savefig(output, dpi=600)
     plt.show()
 
+
 if __name__ == '__main__':
 
     data = read_csv('data20200417.csv')
-    data = data.loc['2020-03-15 00:00:00': '2020-04-15 00:00:00']
+    data = data.loc['2020-03-15 00:00:00': '2020-06-01 00:00:00']
     data = data.round(3)
     data.to_csv('soil.csv')
     plot_data = data.loc[:, (slice(None), 'temp_C')]

@@ -34,4 +34,13 @@ How do the cultivars and their intervariability affect the soil response to the 
 3. use the ERT-soil model to upscale the soil data.
 4. match weather and ERT to extract differences among cultivars and between the cultivars and bare soil.
 
+# Measuring vs Estimating
+
+Weather: we have standard weather data, but we are missing net radiation.
+Anyway, net radiometers have significant errors and aren't really common.
+Consequently, there is high interest in methods for estimating the net radiation.
+
+Soil: we have sensors for water content and temperature, and ERT resitivity, but we are missing soil heat flux.
+
+
 
