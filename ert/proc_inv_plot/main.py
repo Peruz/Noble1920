@@ -35,7 +35,7 @@ if do_process:
                 raise ValueError('no geometric factors for this file name')
             fyield = process(fName=f,
                              k_file=k_file,
-                             rec=5,
+                             rec=3,
                              rhoa=(0, 1E+3),
                              w_rhoa=True)
             fcsv, finv, datetime = next(fyield)
@@ -60,7 +60,7 @@ if do_invert:
             f = r['file']
             finv = r['finv']
             fref = None
-            fyield = invert(fName=finv, mesh='mesh/mesh.bms', lam=100, err=0.05, opt=True)
+            fyield = invert(fName=finv, mesh='mesh/mesh.bms', lam=20, err=0.03, opt=True)
             fvtk = next(fyield)
             table.loc[table['file'] == f, ['invert', 'fvtk']] = True, fvtk
         table = update_table(table, table_name, data_ext)
