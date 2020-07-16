@@ -40,6 +40,11 @@ Weather: we have standard weather data, but we are missing net radiation.
 Anyway, net radiometers have significant errors and aren't really common.
 Consequently, there is high interest in methods for estimating the net radiation.
 
+## Possible models
+Weather: see FAO Chapter 3, Metereological data
+
+R_n = R_t * albedo
+
 Soil: we have sensors for water content and temperature, and ERT resitivity, but we are missing soil heat flux.
 
 

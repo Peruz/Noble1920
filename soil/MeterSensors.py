@@ -6,7 +6,7 @@ import numpy as np
 
 
 def read_csv(fn):
-    data = pd.read_csv('data20200602.csv', skiprows=0, header=[0, 2], skipinitialspace=True)
+    data = pd.read_csv(fn, skiprows=0, header=[0, 2], skipinitialspace=True)
     # set datetime column as index
     dt_ind = data.columns.get_level_values(1).get_loc('Timestamp')
     dt_header = data.columns[dt_ind]
@@ -54,19 +54,19 @@ def plot_datetime(df, ylabel, output):
     ax.grid()
     ax.set_ylabel(ylabel)
     plt.tight_layout()
-    plt.savefig(output, dpi=600)
+    plt.savefig(output, dpi=1200)
     plt.show()
 
 
 if __name__ == '__main__':
 
-    data = read_csv('data20200417.csv')
-    data = data.loc['2020-03-15 00:00:00': '2020-06-01 00:00:00']
+    data = read_csv('all_periods_combined.csv')
+    data = data.loc['2020-03-15 00:00:00': '2020-07-12 00:00:00']
     data = data.round(3)
     data.to_csv('soil.csv')
     plot_data = data.loc[:, (slice(None), 'temp_C')]
-    plot_datetime(plot_data, ylabel='temp C', output='temp.png')
+    plot_datetime(plot_data, ylabel='temp C', output='temp.pdf')
     plot_data = data.loc[:, (slice(None), 'w_pot_kPa')]
-    plot_datetime(plot_data, ylabel='temp C', output='w_pot.png')
+    plot_datetime(plot_data, ylabel='w pot kPa', output='w_pot.pdf')
     plot_data = data.loc[:, (slice(None), 'w_cnt_vol')]
-    plot_datetime(plot_data, ylabel='temp C', output='w_cnt.png')
+    plot_datetime(plot_data, ylabel='w cnt vol', output='w_cnt.pdf')
