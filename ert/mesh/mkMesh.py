@@ -31,8 +31,25 @@ def view():
     pv.set_plot_theme("document")
     mesh = pv.read('mesh.vtk')
     plotter = pv.Plotter()
-    plotter.add_mesh(mesh, show_edges=True, scalar='Marker', show_scalar_bar=False, edge_color='k', cmap='RdBu', clim=(-1, 1))
-    plotter.show_bounds(mesh=mesh, grid='back', location='outer', ticks='both', font_size=18, font_family='times', use_2d=True, padding=0.1)
+    plotter.add_mesh(
+        mesh,
+        show_edges=True,
+        scalar='Marker',
+        show_scalar_bar=False,
+        edge_color='k',
+        cmap='RdBu',
+        clim=(-1, 1)
+        )
+    plotter.show_bounds(
+        mesh=mesh,
+        grid='back',
+        location='outer',
+        ticks='both',
+        font_size=18,
+        font_family='times',
+        use_2d=True,
+        padding=0.1
+        )
     plotter.show()
 
 

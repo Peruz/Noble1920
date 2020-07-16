@@ -4,22 +4,25 @@ import pygimli as pg
 import matplotlib.pyplot as plt
 import numpy as np
 
+
 def init_nxyz():
     x = np.linspace(0, 31.5, 64)
     y = np.zeros(64)
     z = np.zeros(64)
-    n = np.arange(1,65)
+    n = np.arange(1, 65)
     nxyz = np.column_stack((n, x, y, z))
     return(nxyz)
 
+
 def make_scheme(nxyz, sequence):
     scheme = pb.DataContainerERT()
-    scheme.setSensorPositions(nxyz[:,1:])
+    scheme.setSensorPositions(nxyz[:, 1:])
     scheme.resize(len(sequence))
     for i, j in enumerate("abmn"):
-        scheme.set(j, sequence[:, i] -1)
+        scheme.set(j, sequence[:, i] - 1)
     scheme.set("valid", np.ones(len(sequence)))
     return(scheme)
+
 
 def plot_k(sim_output):
     plt.plot(sim_output['k'], 'or', markersize=4)
@@ -56,10 +59,10 @@ if __name__ == "__main__":
     sim_output['r'] = sim_output['rhoa'] / sim_output['k']
     plot_k(sim_output)
 
-#    sim_result.markInvalid(abs(sim_result('k')) > 100)
-#    sim_result.markInvalid(sim_result('rhoa') < 5)
-#    sim_result.markInvalid(sim_result('rhoa') > 400)
-#    sim_result.removeInvalid()
+    # sim_result.markInvalid(abs(sim_result('k')) > 100)
+    # sim_result.markInvalid(sim_result('rhoa') < 5)
+    # sim_result.markInvalid(sim_result('rhoa') > 400)
+    # sim_result.removeInvalid()
 
     inv = pb.ERTManager()
     inv.setMesh(mesh)
@@ -69,5 +72,5 @@ if __name__ == "__main__":
     inv.paraDomain.save("mesh.vtk")
     ax, cbar = inv.showModel(cmap='jet', cMin=0, cMax=50)
     plt.show()
-    #mesh.addExportData('inv_rho', inv_res)
-    #mesh.exportVTK('mesh_data.vtk')
+    # mesh.addExportData('inv_rho', inv_res)
+    # mesh.exportVTK('mesh_data.vtk')
