@@ -121,15 +121,18 @@ def plot_df(df, output_name):
     plt.close()
 
 
-def correlation(df, res_col='avg'):
-    df = df.loc[:, (['ert', 'soil'], slice(None), ['avg', 'avg_comp', 'std', 'w_cnt_vol', 'temp_C'])]
+def correlation(df, res_col='avg', soil_col='w_cnt_vol', fig_name='ertRes_soilWcnt'):
+    df = df.loc[
+        :,
+        (['ert', 'soil'], slice(None), ['std', 'temp_C', res_col, soil_col])
+        ]
     # df = df.dropna(how='any')
     df = df.loc[df[('ert', 'sensor1', res_col)].notnull()]
 
     fig, ax = plt.subplots(1, 1, figsize=(8, 8))
     # yerr=df.loc[:, ('ert', 'sensor1', slice(None))]
     plt.errorbar(
-        x=df[('soil', '5te_1', 'w_cnt_vol')],
+        x=df[('soil', '5te_1', soil_col)],
         y=df[('ert', 'sensor1', res_col)],
         yerr=df[('ert', 'sensor1', 'std')] / 2,
         fmt='o',
@@ -138,7 +141,7 @@ def correlation(df, res_col='avg'):
     seaborn.scatterplot(
         data=df,
         ax=ax,
-        x=('soil', '5te_1', 'w_cnt_vol'),
+        x=('soil', '5te_1', soil_col),
         y=('ert', 'sensor1', res_col),
         ci=('ert', 'sensor1', 'std'),
         sizes=(30, 150),
@@ -150,12 +153,13 @@ def correlation(df, res_col='avg'):
         )
     plt.legend(ncol=2, fancybox=True, framealpha=0.5, loc=1, prop={"size": 8})
     plt.tight_layout()
-    plt.savefig("ert_cnt_5te1.pdf")
+    fout = fig_name + '_1.pdf'
+    plt.savefig(fout)
     plt.show()
 
     fig, ax = plt.subplots(1, 1, figsize=(8, 8))
     plt.errorbar(
-        x=df[('soil', '5te_2', 'w_cnt_vol')],
+        x=df[('soil', '5te_2', soil_col)],
         y=df[('ert', 'sensor2', res_col)],
         yerr=df[('ert', 'sensor2', 'std')] / 2,
         fmt='o',
@@ -164,7 +168,7 @@ def correlation(df, res_col='avg'):
     seaborn.scatterplot(
         data=df,
         ax=ax,
-        x=('soil', '5te_2', 'w_cnt_vol'),
+        x=('soil', '5te_2', soil_col),
         y=('ert', 'sensor2', res_col),
         sizes=(30, 150),
         s=90,
@@ -175,14 +179,15 @@ def correlation(df, res_col='avg'):
         )
     plt.legend(ncol=2, fancybox=True, framealpha=0.5, loc=1, prop={"size": 8})
     plt.tight_layout()
-    plt.savefig("ert_cnt_5te2.pdf")
+    fout = fig_name + '_2.pdf'
+    plt.savefig(fout)
     plt.show()
 
-    df = df.loc[df[('soil', '5te_3', 'w_cnt_vol')].notnull()]
+    df = df.loc[df[('soil', '5te_3', soil_col)].notnull()]
 
     fig, ax = plt.subplots(1, 1, figsize=(8, 8))
     plt.errorbar(
-        x=df[('soil', '5te_3', 'w_cnt_vol')],
+        x=df[('soil', '5te_3', soil_col)],
         y=df[('ert', 'sensor3', res_col)],
         yerr=df[('ert', 'sensor3', 'std')] / 2,
         fmt='o',
@@ -191,8 +196,8 @@ def correlation(df, res_col='avg'):
     seaborn.scatterplot(
         data=df,
         ax=ax,
-        y=('ert', 'sensor3', 'avg'),
-        x=('soil', '5te_3', 'w_cnt_vol'),
+        y=('ert', 'sensor3', res_col),
+        x=('soil', '5te_3', soil_col),
         sizes=(30, 150),
         s=90,
         size=('soil', '5te_3', 'temp_C'),
@@ -202,13 +207,14 @@ def correlation(df, res_col='avg'):
         )
     plt.legend(ncol=2, fancybox=True, framealpha=0.5, loc=1, prop={"size": 8})
     plt.tight_layout()
-    plt.savefig("ert_cnt_5te3.pdf")
+    fout = fig_name + '_3.pdf'
+    plt.savefig(fout)
     plt.show()
 
     fig, ax = plt.subplots(1, 1, figsize=(8, 8))
-    df = df.loc[df[('soil', '5te_3', 'w_cnt_vol')].notnull()]
+    df = df.loc[df[('soil', '5te_3', soil_col)].notnull()]
     plt.errorbar(
-        x=df[('soil', '5te_4', 'w_cnt_vol')],
+        x=df[('soil', '5te_4', soil_col)],
         y=df[('ert', 'sensor4', res_col)],
         yerr=df[('ert', 'sensor4', 'std')] / 2,
         fmt='o',
@@ -218,7 +224,7 @@ def correlation(df, res_col='avg'):
         data=df,
         ax=ax,
         y=('ert', 'sensor4', res_col),
-        x=('soil', '5te_4', 'w_cnt_vol'),
+        x=('soil', '5te_4', soil_col),
         sizes=(30, 150),
         s=90,
         size=('soil', '5te_4', 'temp_C'),
@@ -228,7 +234,8 @@ def correlation(df, res_col='avg'):
         )
     plt.legend(ncol=2, fancybox=True, framealpha=0.5, loc=1, prop={"size": 8})
     plt.tight_layout()
-    plt.savefig("ert_cnt_5te4.pdf")
+    fout = fig_name + '_4.pdf'
+    plt.savefig(fout)
     plt.show()
 
 
@@ -396,6 +403,7 @@ if __name__ == '__main__':
             )
         ]
     soil_mi = pd.MultiIndex.from_tuples(soil_mi_tuples)
+
     soil.columns = soil_mi
 
     # concat dfs
@@ -420,6 +428,23 @@ if __name__ == '__main__':
         col_name = (r[0], r[1], 'avg_comp')
         df[col_name] = rho_temp_correction(df[r], df[t])
 
+    resistivities = [
+        ('soil', '5te_1', 'conductivity_mS/cm'),
+        ('soil', '5te_2', 'conductivity_mS/cm'),
+        ('soil', '5te_3', 'conductivity_mS/cm'),
+        ('soil', '5te_4', 'conductivity_mS/cm'),
+        ]
+    temperatures = [
+        ('soil', '5te_1', 'temp_C'),
+        ('soil', '5te_2', 'temp_C'),
+        ('soil', '5te_3', 'temp_C'),
+        ('soil', '5te_4', 'temp_C'),
+        ]
+
+    for r, t in zip(resistivities, temperatures):
+        col_name = (r[0], r[1], 'res_comp')
+        df[col_name] = 1 / (df[r] / 10)
+
     # save main df
     out_dir_file = os.path.join(args.out_dir, args.out_fname)
     df = df.infer_objects()
@@ -427,7 +452,7 @@ if __name__ == '__main__':
     df.to_csv(out_dir_file, float_format='%g')
 
     plot_datetime(df)
-    correlation(df, res_col='avg_comp')
+    correlation(df, res_col='avg_comp', soil_col='w_cnt_vol', fig_name='ertRes_soilWcnt')
     potential_content(df)
 
     # ert_avg = df.loc[:, ('ert', slice(None), 'avg')]
