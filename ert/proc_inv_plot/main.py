@@ -18,7 +18,7 @@ print(table)
 
 if do_process:
     print('\nPROCESSING')
-    table_to_process = select_table(table, which='all',
+    table_to_process = select_table(table, which='new',
                                     col_check='process', col_needed='file')
     if table_to_process.empty:
         print('no new files')
@@ -50,7 +50,7 @@ if do_process:
 if do_invert:
     print('\nINVERSION')
     table_to_invert = select_table(table,
-                                   which='all',
+                                   which='new',
                                    col_check='invert',
                                    col_needed='finv')
     if table_to_invert.empty:
