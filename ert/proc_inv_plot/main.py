@@ -4,12 +4,15 @@ from ERTpm.process import process
 from ERTpm.invert import invert
 from ERTpm.plot2d import plot2d
 from ERTpm.analysis import analysis
+from ERTpm.remap_vtk_scalar import remap
 import pandas as pd
 
-do_process = True
-do_invert = True
-do_plot2d = True
-do_analysis = True
+do_process = False
+do_invert = False
+do_plot2d = False
+do_analysis = False
+do_remap = True
+
 data_ext = '.Data'  # labrecque
 table = init_table(table_name, table_headers, table_dtypes)
 table = update_table(table, table_name, data_ext)
@@ -33,11 +36,13 @@ if do_process:
                 k_file = 'kfiles/sim_grad_MMCDDD.data'
             else:
                 raise ValueError('no geometric factors for this file name')
-            fyield = process(fName=f,
-                             k_file=k_file,
-                             rec=3,
-                             rhoa=(0, 1E+3),
-                             w_rhoa=True)
+            fyield = process(
+                fName=f,
+                k_file=k_file,
+                rec=3,
+                rhoa=(0, 1E+3),
+                w_rhoa=True,
+                )
             fcsv, finv, datetime = next(fyield)
             process_columns = ['process', 'fcsv', 'finv', 'datetime']
             process_values = [True, fcsv, finv, datetime]
@@ -49,10 +54,12 @@ if do_process:
 
 if do_invert:
     print('\nINVERSION')
-    table_to_invert = select_table(table,
-                                   which='new',
-                                   col_check='invert',
-                                   col_needed='finv')
+    table_to_invert = select_table(
+        table,
+        which='new',
+        col_check='invert',
+        col_needed='finv',
+        )
     if table_to_invert.empty:
         print('no new files')
     else:
@@ -68,10 +75,12 @@ if do_invert:
 
 if do_plot2d:
     print('\nPLOT')
-    table_to_plot = select_table(table,
-                                 which='all',
-                                 col_check='plot',
-                                 col_needed='fvtk')
+    table_to_plot = select_table(
+        table,
+        which='all',
+        col_check='plot',
+        col_needed='fvtk',
+        )
     if table_to_plot.empty:
         print('no new files')
     else:
@@ -87,7 +96,31 @@ if do_plot2d:
 if do_analysis:
     ds = pd.read_csv('sensor_volumes.csv')
     print(ds)
-    analysis(csv_datasets=table_name,
-             csv_reg='sensor_volumes.csv',
-             datetime_col='datetime',
-             vtk_col='fvtk')
+    analysis(
+        csv_datasets=table_name,
+        csv_reg='sensor_volumes.csv',
+        datetime_col='datetime',
+        vtk_col='fvtk',
+        )
+
+if do_remap:
+    table_to_plot = select_table(
+        table,
+        which='all',
+        col_check=None,
+        col_needed='fvtk',
+        )
+    if table_to_plot.empty:
+        print('no new files')
+    else:
+        for i, r in table_to_plot.iterrows():
+            f = r['file']
+            fvtk = r['fvtk']
+            remap(
+                model='archie',
+                fnames=fvtk,
+                sn='res',
+                rho_sat=3.81,
+                n=0.78,
+                out_dir='wcnt',
+                )

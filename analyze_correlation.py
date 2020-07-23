@@ -42,10 +42,13 @@ def fit_main(df):
 
 
 def fit_plot_final(df, rho_sat, n):
-    plt.plot(df['soil'], df['ert'], 'or')
+    fig, ax = plt.subplots(1, 1)
+    ax.plot(df['soil'], df['ert'], 'or')
     model_x = np.linspace(0.2, 0.55, 201)
     calc = fit_model(model_x, rho_sat, n)
-    plt.plot(model_x, calc, 'b')
+    ax.plot(model_x, calc, 'b')
+    ax.set_xlabel('volumetric water content')
+    ax.set_ylabel('ERT resistivity')
     plt.show()
 
 
